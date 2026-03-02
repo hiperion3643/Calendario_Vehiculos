@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Fotomultas - Gestión de Vehículos{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="mb-4"><i class="bi bi-exclamation-triangle"></i> Registro de Fotomultas</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Vehículo</th>
+                        <th>Fecha</th>
+                        <th>Motivo</th>
+                        <th>Monto</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for multa in multas %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'detalle_vehiculo' multa.vehiculo.id %}">
+                                {{ multa.vehiculo.nombre }}
+                            </a>
+                        </td>
+                        <td>{{ multa.fecha|date:"d/m/Y" }}</td>
+                        <td>{{ multa.motivo|truncatewords:10 }}</td>
+                        <td>${{ multa.monto }}</td>
+                        <td>{{ multa.ubicacion }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if multa.estado == 'PEN' %}bg-danger
+                                {% elif multa.estado == 'PRO' %}bg-warning
+                                {% else %}bg-success{% endif %}">
+                                {{ multa.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if user.is_staff %}
+                                <a href="{% url 'admin:core_fotomulta_change' multa.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> No hay fotomultas registradas.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if user.is_staff %}
+<div class="fixed-bottom p-3" style="background-color: rgba(255,255,255,0.9);">
+    <a href="{% url 'admin:core_fotomulta_add' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Registrar Fotomulta
+    </a>
+</div>
+{% endif %}
+{% endblock %}

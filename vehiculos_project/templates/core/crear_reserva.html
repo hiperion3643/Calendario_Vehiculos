@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva Reserva - Gestión de Vehículos{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'lista_reservas' %}">Reservas</a></li>
+                <li class="breadcrumb-item active">Nueva Reserva</li>
+            </ol>
+        </nav>
+        <h1 class="mb-4"><i class="bi bi-plus-circle"></i> Nueva Reserva de Vehículo</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="vehiculo" class="form-label">Vehículo</label>
+                            <select class="form-select" id="vehiculo" name="vehiculo" required>
+                                <option value="">Seleccione un vehículo...</option>
+                                {% for v in vehiculos %}
+                                    <option value="{{ v.id }}" 
+                                            {% if v.id == vehiculo_seleccionado %}selected{% endif %}
+                                            {% if v.estado != 'DIS' %}disabled{% endif %}>
+                                        {{ v.nombre }} - {{ v.get_estado_display }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">Solo se muestran vehículos disponibles</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fecha" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required 
+                                   min="{% now 'Y-m-d' %}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="hora_salida" class="form-label">Hora de Salida</label>
+                            <input type="time" class="form-control" id="hora_salida" name="hora_salida" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="hora_regreso_estimada" class="form-label">Hora de Regreso Estimada</label>
+                            <input type="time" class="form-control" id="hora_regreso_estimada" name="hora_regreso_estimada">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="solicitante" class="form-label">Solicitante</label>
+                        <input type="text" class="form-control" id="solicitante" name="solicitante" required
+                               placeholder="Nombre completo del solicitante">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="area" class="form-label">Área/Departamento</label>
+                        <input type="text" class="form-control" id="area" name="area" required
+                               placeholder="Ej: Ventas, Recursos Humanos, etc.">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contacto" class="form-label">Contacto</label>
+                        <input type="text" class="form-control" id="contacto" name="contacto" required
+                               placeholder="Teléfono o email de contacto">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo del Uso</label>
+                        <textarea class="form-control" id="motivo" name="motivo" rows="3"
+                                  placeholder="Describa el motivo de la solicitud del vehículo"></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Crear Reserva
+                        </button>
+                        <a href="{% url 'lista_reservas' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Instrucciones</h5>
+            </div>
+            <div class="card-body">
+                <ol class="mb-0">
+                    <li>Seleccione un vehículo disponible</li>
+                    <li>Indique la fecha y hora de uso</li>
+                    <li>Complete los datos del solicitante</li>
+                    <li>Describa el motivo del uso</li>
+                    <li>Revise la información antes de enviar</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Notas Importantes</h5>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>La reserva debe hacerse con al menos 24 horas de anticipación</li>
+                    <li>El vehículo debe ser devuelto en el estado en que fue recibido</li>
+                    <li>Reporte cualquier incidente inmediatamente</li>
+                    <li>El conductor debe tener licencia vigente</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+// Establecer fecha mínima como hoy
+var today = new Date().toISOString().split('T')[0];
+document.getElementById('fecha').setAttribute('min', today);
+
+// Validar que la hora de regreso sea posterior a la de salida
+document.getElementById('hora_salida').addEventListener('change', function() {
+    var horaSalida = this.value;
+    document.getElementById('hora_regreso_estimada').setAttribute('min', horaSalida);
+});
+</script>
+{% endblock %}
+{% endblock %}
