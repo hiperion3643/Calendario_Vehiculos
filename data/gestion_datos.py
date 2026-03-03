@@ -63,7 +63,7 @@ def inicializar_archivos():
 
 def cargar_reservas():
     """Carga los datos de reservas"""
-    if not os.path.exists(FILE_RESERVAS):
+    if not os.path.exists(FILE_RESERVAS): 
         return pd.DataFrame(columns=["Fecha", "Hora Inicio", "Hora Fin", "Vehículo", "Solicitante", "Área", "Km_Salida", "Km_Regreso", "gasolina salida", "gasolina regreso"])
     return pd.read_csv(FILE_RESERVAS)
 
@@ -184,21 +184,6 @@ def calcular_rendimiento_promedio(id_vehiculo):
     rendimiento_promedio = viajes_validos["Rendimiento"].mean()
     
     return round(rendimiento_promedio, 2)
-
-def obtener_ultimo_viaje(id_vehiculo):
-    """Obtiene el último viaje registrado para un vehículo"""
-    df = cargar_reservas()
-    if df.empty:
-        return None
-    
-    # Filtrar por vehículo y ordenar por fecha descendente
-    viajes_vehiculo = df[df['Vehículo'] == id_vehiculo]
-    if viajes_vehiculo.empty:
-        return None
-    
-    # Obtener el viaje más reciente
-    ultimo_viaje = viajes_vehiculo.sort_values(by=['Fecha', 'Hora Fin'], ascending=False).iloc[0]
-    return ultimo_viaje
 
 def calcular_rendimiento_promedio(id_vehiculo):
     """Calcula el rendimiento promedio (km/l) de un vehículo"""
