@@ -138,3 +138,107 @@ def actualizar_estado_fotomulta(id_fotomulta, estado):
     idx = df.index[df["Referencia"] == id_fotomulta].tolist()[0]
     df.at[idx, "Estado"] = estado
     df.to_csv(FILE_FOTOMULTAS, index=False)
+
+def obtener_ultimo_viaje(id_vehiculo):
+    """Obtiene el último viaje de un vehículo desde el archivo de reservas"""
+    df_reservas = cargar_reservas()
+    
+    # Filtrar reservas por vehículo
+    viajes_vehiculo = df_reservas[df_reservas["Vehículo"] == id_vehiculo]
+    
+    if viajes_vehiculo.empty:
+        return None
+    
+    # Ordenar por fecha y hora para obtener el más reciente
+    viajes_vehiculo["Fecha"] = pd.to_datetime(viajes_vehiculo["Fecha"])
+    viajes_vehiculo = viajes_vehiculo.sort_values(by=["Fecha", "Hora Fin"], ascending=False)
+    
+    # Retornar el último viaje
+    return viajes_vehiculo.iloc[0]
+
+def calcular_rendimiento_promedio(id_vehiculo):
+    """Calcula el rendimiento promedio (km/litro) de un vehículo basado en sus viajes"""
+    df_reservas = cargar_reservas()
+    
+    # Filtrar reservas por vehículo
+    viajes_vehiculo = df_reservas[df_reservas["Vehículo"] == id_vehiculo]
+    
+    if viajes_vehiculo.empty:
+        return 0.0
+    
+    # Calcular rendimiento para cada viaje
+    viajes_vehiculo["Km_Recorridos"] = viajes_vehiculo["Km_Regreso"] - viajes_vehiculo["Km_Salida"]
+    viajes_vehiculo["Gasolina_Usada"] = viajes_vehiculo["gasolina salida"] - viajes_vehiculo["gasolina regreso"]
+    
+    # Filtrar viajes con datos válidos
+    viajes_validos = viajes_vehiculo[
+        (viajes_vehiculo["Km_Recorridos"] > 0) & 
+        (viajes_vehiculo["Gasolina_Usada"] > 0)
+    ]
+    
+    if viajes_validos.empty:
+        return 0.0
+    
+    # Calcular rendimiento promedio
+    viajes_validos["Rendimiento"] = viajes_validos["Km_Recorridos"] / viajes_validos["Gasolina_Usada"]
+    rendimiento_promedio = viajes_validos["Rendimiento"].mean()
+    
+    return round(rendimiento_promedio, 2)
+
+def obtener_ultimo_viaje(id_vehiculo):
+    """Obtiene el último viaje registrado para un vehículo"""
+    df = cargar_reservas()
+    if df.empty:
+        return None
+    
+    # Filtrar por vehículo y ordenar por fecha descendente
+    viajes_vehiculo = df[df['Vehículo'] == id_vehiculo]
+    if viajes_vehiculo.empty:
+        return None
+    
+    # Obtener el viaje más reciente
+    ultimo_viaje = viajes_vehiculo.sort_values(by=['Fecha', 'Hora Fin'], ascending=False).iloc[0]
+    return ultimo_viaje
+
+def calcular_rendimiento_promedio(id_vehiculo):
+    """Calcula el rendimiento promedio (km/l) de un vehículo"""
+    df = cargar_reservas()
+    if df.empty:
+        return 0
+    
+    # Filtrar por vehículo
+    viajes_vehiculo = df[df['Vehículo'] == id_vehiculo]
+    if viajes_vehiculo.empty or len(viajes_vehiculo) < 2:
+        return 0
+    
+    # Calcular rendimiento promedio
+    total_km = 0
+    total_combustible = 0
+    
+    for i in range(1, len(viajes_vehiculo)):
+        viaje_actual = viajes_vehiculo.iloc[i]
+        viaje_anterior = viajes_vehiculo.iloc[i-1]
+        
+        # Calcular km recorridos
+        km_recorridos = viaje_actual['Km_Regreso'] - viaje_anterior['Km_Salida']
+        
+        # Calcular combustible usado
+        combustible_usado = viaje_anterior['gasolina salida'] - viaje_actual['gasolina regreso']
+        
+        if combustible_usado > 0:
+            total_km += km_recorridos
+            total_combustible += combustible_usado
+    
+    if total_combustible == 0:
+        return 0
+    
+    return round(total_km / total_combustible, 2)
+
+
+def obtener_nombres_vehiculos():
+    """Obtiene una lista con los nombres de todos los vehículos"""
+    from .vehiculos import VEHICULOS
+    return [f"{v['tipo']} - {v['placa']} ({v['asignado']})" for v in VEHICULOS]
+
+
+

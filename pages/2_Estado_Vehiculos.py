@@ -10,7 +10,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from data.vehiculos import VEHICULOS, obtener_vehiculo_por_id
-from data.gestion_datos import cargar_estado_vehiculos
+from data.gestion_datos import cargar_estado_vehiculos, obtener_ultimo_viaje, calcular_rendimiento_promedio
 
 def mostrar_pagina():
     
@@ -30,6 +30,12 @@ def mostrar_pagina():
     # Cargar datos del vehículo
     df_estado = cargar_estado_vehiculos()
     vehiculo_info = df_estado[df_estado["ID"] == id_vehiculo].iloc[0] if not df_estado.empty else None
+    
+    # Obtener el último viaje del vehículo
+    ultimo_viaje = obtener_ultimo_viaje(id_vehiculo)
+    
+    # Calcular el rendimiento promedio
+    rendimiento_promedio = calcular_rendimiento_promedio(id_vehiculo)
 
     if vehiculo_info is not None:
         # Mostrar información del vehículo
@@ -44,9 +50,18 @@ def mostrar_pagina():
 
         with col2:
             st.markdown("### 📊 Estado Actual")
-            st.write(f"**Kilometraje:** {vehiculo_info['Kilometraje']} km")
-            st.write(f"**Nivel de combustible:** {vehiculo_info['Combustible']}")
-            st.write(f"**Última actualización:** {vehiculo_info['Última Actualización']}")
+            # Mostrar datos del último viaje si existe
+            if ultimo_viaje is not None:
+                st.write(f"**Kilometraje:** {ultimo_viaje['Km_Regreso']} km")
+                st.write(f"**Nivel de combustible:** {ultimo_viaje['gasolina regreso']}%")
+                st.write(f"**Última actualización:** {ultimo_viaje['Fecha']}")
+            else:
+                st.write(f"**Kilometraje:** {vehiculo_info['Kilometraje']} km")
+                st.write(f"**Nivel de combustible:** {vehiculo_info['Combustible']}")
+                st.write(f"**Última actualización:** {vehiculo_info['Última Actualización']}")
+            
+        # Mostrar rendimiento promedio
+        st.metric("Rendimiento Promedio", f"{rendimiento_promedio} km/l")
 
         # Sección de imágenes del vehículo
         st.markdown("### 📸 Imágenes del Vehículo")
