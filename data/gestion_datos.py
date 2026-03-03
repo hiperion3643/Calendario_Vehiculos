@@ -1,4 +1,3 @@
-
 # Módulo de gestión de datos
 
 import pandas as pd
