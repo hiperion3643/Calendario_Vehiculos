@@ -264,6 +264,7 @@ VEHICULOS_DETALLE = [
         "Vigencia_Seguro": "N/A"
     }
 ]
+
 def obtener_detalle_vehiculo(id_vehiculo):
     """Obtiene el detalle de un vehículo por su ID"""
     for vehiculo in VEHICULOS_DETALLE:
