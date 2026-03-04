@@ -1,9 +1,9 @@
 Fecha,Hora Inicio,Hora Fin,Vehículo,Solicitante,Área,Km_Salida,Km_Regreso,gasolina salida,gasolina regreso,ID
-2026-03-06,09:00,17:00,crafter_sp85378,Belen,Evaluación,,,,,0.0
-2026-03-06,09:00,17:00,urvan_uek998b,Belen,Evaluación,,,,,1.0
-2026-03-06,09:00,13:00,versa_ucc121b,Aldo Moisés Ramirez Peña,,,,,,2.0
-2026-03-09,09:00,13:00,versa_ucc121b,Aldo Moisés Ramirez Peña,,,,,,3.0
-2026-02-25,10:30,18:00,pickup_sr29944,Lalo,Mantenimiento,65.0,71.0,Lleno,Lleno,4.0
-2026-02-27,09:00,16:00,crafter_sp85378,Abraham Adauta,Vinculación,48432.0,48461.0,1/2,1/2,5.0
-2026-03-02,10:15,13:15,versa_ucc121b,Juan Armando Rodriguez,Rectoría,9867.0,9877.0,1/2,1/2,
-2026-03-03,14:45,18:00,versa_ucc121b,Taylor,Materiales,9902.0,0.0,3/8,3/8,
+2026-03-06,09:00,17:00,crafter_sp85378,Belen,Evaluación,,,,,0
+2026-03-06,09:00,17:00,urvan_uek998b,Belen,Evaluación,,,,,1
+2026-03-06,09:00,13:00,versa_ucc121b,Aldo Moisés Ramirez Peña,,,,,,2
+2026-03-09,09:00,13:00,versa_ucc121b,Aldo Moisés Ramirez Peña,,,,,,3
+2026-02-25,10:30,18:00,pickup_sr29944,Lalo,Mantenimiento,65.0,71.0,Lleno,Lleno,4
+2026-02-27,09:00,16:00,crafter_sp85378,Abraham Adauta,Vinculación,48432.0,48461.0,1/2,1/2,5
+2026-03-02,10:15,13:15,versa_ucc121b,Juan Armando Rodriguez,Rectoría,9867.0,9877.0,1/2,1/2,6
+2026-03-03,14:45,18:15,versa_ucc121b,Taylor,Materiales,9902.0,9921.0,3/8,3/8,7

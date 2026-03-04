@@ -1,1 +1,4 @@
-ID,Placa,Fecha,Hora,Lugar,Infracción,Monto,Estado,Referencia,Observaciones
+ID,Conductor,Placa,Fecha,Hora,Lugar,Infracción,Monto,Estado
+virtus_uej681b,Lic. Leticia,UEJ681B,2026-02-24,10:15:06,Boulevard Puebla-Amozoc Km 9+000 Sentido Puebla,Exceso de velocidad,1408.00,No Pagado
+virtus_uej681b,Lic. Leticia,UEJ681B,2026-02-25,10:28:12,Boulevard Puebla-Amozoc Km 9+000 Sentido Puebla,Exceso de velocidad,1408.00,No Pagado
+versa_ucc121b,Desconocido,UCC121B,2026-02-10,11:59:07,Atlixcáyotl Altura Puente Periférico Sentido Atlixco,Exceso de velocidad,1408.00,No Pagado
