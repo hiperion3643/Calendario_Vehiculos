@@ -60,6 +60,11 @@ def inicializar_archivos():
         ])
         df.to_csv(FILE_FOTOMULTAS, index=False)
 
+    # Archivo de gasolina
+    if not os.path.exists(os.path.join(DIR_BASE, "data", "gasolina.csv")):
+        from .gestion_gasolina import inicializar_archivo_gasolina
+        inicializar_archivo_gasolina()
+
 def cargar_reservas():
     """Carga los datos de reservas"""
     if not os.path.exists(FILE_RESERVAS):
